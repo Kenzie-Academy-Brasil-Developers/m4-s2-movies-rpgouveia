@@ -30,9 +30,20 @@ const listMovies = async (
   request: Request,
   response: Response
 ): Promise<Response> => {
-  const query: string = `SELECT * FROM movies;`;
-  const queryResult: iMovieResult = await client.query(query);
-
+  const { category } = request.query;
+  let query: string;
+  let queryResult: iMovieResult;
+  if (category) {
+    query = `SELECT * FROM movies WHERE category = $1;`;
+    const queryConfig: QueryConfig = { text: query, values: [category]};
+    queryResult = await client.query(queryConfig);
+  } else {
+    query = `SELECT * FROM movies;`;
+    queryResult = await client.query(query);
+  }
+  if (queryResult.rows.length === 0 && category) {
+    queryResult = await client.query(`SELECT * FROM movies;`);
+  }
   return response.status(200).json(queryResult.rows);
 };
 
