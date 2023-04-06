@@ -3,7 +3,7 @@ import { QueryConfig } from "pg";
 import { client } from "./database";
 import { iMovie, iMovieResult } from "./interfaces";
 
-const insertMovie = async (request: Request, response: Response): Promise<Response> => {
+const createMovie = async (request: Request, response: Response): Promise<Response> => {
   const { body: payload } = request;
   const query: string = `
     INSERT INTO movies (name, category, duration, price)
@@ -22,14 +22,20 @@ const insertMovie = async (request: Request, response: Response): Promise<Respon
   return response.status(201).json(movie);
 };
 
-const queryMovies = async (request: Request, response: Response): Promise<Response> => {
+const listMovies = async (request: Request, response: Response): Promise<Response> => {
   const query: string = `SELECT * FROM movies;`;
   const queryResult: iMovieResult = await client.query(query);
 
   return response.status(200).json(queryResult.rows);
-}
+};
+
+const retrieveMovie = async (request: Request, response: Response): Promise<Response> => {
+  const movie: iMovie = response.locals.movie
+  return response.status(200).json(movie);
+};
 
 export {
-  insertMovie,
-  queryMovies
-}
+  createMovie,
+  listMovies,
+  retrieveMovie
+};
