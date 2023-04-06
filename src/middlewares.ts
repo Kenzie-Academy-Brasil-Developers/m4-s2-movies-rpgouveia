@@ -15,7 +15,7 @@ const checkMovieId = async (request: Request, response: Response, next: NextFunc
   };
   response.locals.movie = queryResult.rows[0];
   return next();
-}
+};
 
 const checkMovieName = async (request: Request, response: Response, next: NextFunction): Promise<Response | void> => {
   const movie = request.body;
@@ -28,9 +28,9 @@ const checkMovieName = async (request: Request, response: Response, next: NextFu
     })
   }
   return next();
-}
+};
 
 export {
   checkMovieId,
   checkMovieName
-}
+};

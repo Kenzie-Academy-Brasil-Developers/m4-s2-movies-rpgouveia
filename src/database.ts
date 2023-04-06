@@ -1,4 +1,4 @@
-import { Client, QueryConfig, QueryResult } from "pg";
+import { Client } from "pg";
 
 const client: Client = new Client({
   user: 'renato',
